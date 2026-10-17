@@ -1,0 +1,30 @@
+# Rust/Cargo
+/target/
+/Cargo.lock
+
+# Rustfmt backups
+**/*.rs.bk
+
+# Build artifacts
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+*.exe
+
+# Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log

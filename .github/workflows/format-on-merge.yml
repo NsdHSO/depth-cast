@@ -1,0 +1,43 @@
+name: Format on Merge
+
+on:
+  push:
+    branches: [ "main" ]
+
+permissions:
+  contents: write
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install Rust stable + rustfmt
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+
+      - name: Apply rustfmt
+        run: cargo fmt --all
+
+      - name: Commit formatting changes
+        id: commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet; then
+            echo "no_changes=true" >> "$GITHUB_OUTPUT"
+            echo "No formatting changes to commit."
+          else
+            git add -A
+            git commit -m "chore: apply rustfmt formatting
+
+            [skip ci]"
+            git push
+            echo "no_changes=false" >> "$GITHUB_OUTPUT"
+            echo "Committed formatting changes."
+          fi

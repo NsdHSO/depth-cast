@@ -1,0 +1,11 @@
+[package]
+name = "esp32-contract"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+thiserror = { workspace = true }
+
+[lib]
+name = "esp32_contract"
+path = "src/lib.rs"
