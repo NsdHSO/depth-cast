@@ -1,6 +1,4 @@
-use esp32_contract::{
-    DepthReading, DepthSensorConfig, Esp32ContractError, Esp32DepthContract,
-};
+use esp32_contract::{DepthReading, DepthSensorConfig, Esp32ContractError, Esp32DepthContract};
 
 /// Mock implementation of the ESP32 depth-sensor contract for development/testing.
 struct MockEsp32Depth {
@@ -30,9 +28,7 @@ impl Esp32DepthContract for MockEsp32Depth {
             ));
         }
         if !self.calibrated {
-            return Err(Esp32ContractError::I2cError(
-                "sensor not calibrated".into(),
-            ));
+            return Err(Esp32ContractError::I2cError("sensor not calibrated".into()));
         }
         Ok(DepthReading {
             distance_cm: 42.5,
