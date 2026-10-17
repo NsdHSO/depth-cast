@@ -11,8 +11,6 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
-    outputs:
-      upload_url: ${{ steps.create_release.outputs.upload_url }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -36,6 +34,22 @@ jobs:
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Append contributors list
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          CONTRIBUTORS=$(gh api \
+            -H "Accept: application/vnd.github+json" \
+            /repos/${{ github.repository }}/contributors \
+            --jq '[.[] | "- \(.login) (\(.contributions) commits)"] | join("\n")')
+
+          NOTES_FILE=$(mktemp)
+          gh release view ${{ github.ref_name }} --json body -q .body > "$NOTES_FILE"
+          printf '\n\n## Contributors\n\n%s\n' "$CONTRIBUTORS" >> "$NOTES_FILE"
+
+          gh release edit ${{ github.ref_name }} --notes-file "$NOTES_FILE"
+          rm -f "$NOTES_FILE"
 
       - name: Upload app binary
         uses: softprops/action-gh-release@v2
