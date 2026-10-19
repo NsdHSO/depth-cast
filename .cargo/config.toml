@@ -1,0 +1,6 @@
+[alias]
+pico = "run --release --package pico-firmware --features firmware --target thumbv6m-none-eabi"
+pico-build = "build --release --package pico-firmware --features firmware --target thumbv6m-none-eabi"
+
+[target.thumbv6m-none-eabi]
+runner = "probe-rs run --chip RP2040 --verify"

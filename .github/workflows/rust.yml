@@ -18,22 +18,27 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: clippy
+          targets: thumbv6m-none-eabi
       - name: cargo clippy
-        run: cargo clippy --workspace --all-targets
+        run: cargo clippy --release --package pico-firmware --features firmware --target thumbv6m-none-eabi
 
-  test:
+  format:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
-      - name: cargo test
-        run: cargo test --workspace
+        with:
+          components: rustfmt
+      - name: cargo fmt
+        run: cargo fmt --all --check
 
   build:
     runs-on: ubuntu-latest
-    needs: [clippy, test]
+    needs: [clippy, format]
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
-      - name: cargo build --release
-        run: cargo build --release --workspace
+        with:
+          targets: thumbv6m-none-eabi
+      - name: Build Pico firmware
+        run: cargo pico-build

@@ -1,0 +1,34 @@
+{
+  "rust-analyzer": {
+    "cargo": {
+      "target": "thumbv6m-none-eabi",
+      "features": ["firmware"],
+      "allTargets": false,
+      "buildScripts": {
+        "enable": true,
+        "overrideCommand": [
+          "cargo", "check",
+          "--package", "pico-firmware",
+          "--features", "firmware",
+          "--target", "thumbv6m-none-eabi",
+          "--message-format=json"
+        ]
+      }
+    },
+    "check": {
+      "overrideCommand": [
+        "cargo", "clippy",
+        "--package", "pico-firmware",
+        "--features", "firmware",
+        "--target", "thumbv6m-none-eabi",
+        "--message-format=json"
+      ]
+    },
+    "cfg": {
+      "setTest": false
+    },
+    "procMacro": {
+      "enable": true
+    }
+  }
+}

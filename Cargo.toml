@@ -1,9 +1,5 @@
 [workspace]
 resolver = "2"
 members = [
-    "crates/esp32-contract",
-    "crates/app",
+    "crates/pico-firmware",
 ]
-
-[workspace.dependencies]
-thiserror = "1.0"

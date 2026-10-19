@@ -19,9 +19,11 @@ jobs:
 
       - name: Install Rust stable
         uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: thumbv6m-none-eabi
 
       - name: Build release
-        run: cargo build --release --workspace
+        run: cargo pico-build
 
       - name: Create Release
         id: create_release
@@ -51,10 +53,10 @@ jobs:
           gh release edit ${{ github.ref_name }} --notes-file "$NOTES_FILE"
           rm -f "$NOTES_FILE"
 
-      - name: Upload app binary
+      - name: Upload Pico firmware ELF
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
-          files: target/release/app
+          files: target/thumbv6m-none-eabi/release/pico-firmware
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
