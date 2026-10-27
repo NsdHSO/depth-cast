@@ -10,6 +10,9 @@ required-features = ["firmware"]
 test = false
 bench = false
 
+[lib]
+path="src/lib.rs"
+
 [features]
 firmware = []
 
@@ -20,3 +23,7 @@ embedded-hal = "0.2"
 panic-halt = "0.2"
 rp-pico = "0.8"
 rtt-target = "0.6"
+
+[dependencies]
+ds18b20 = "0.1.1"
+one-wire-bus = "0.1.1"

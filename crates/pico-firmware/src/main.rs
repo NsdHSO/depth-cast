@@ -4,6 +4,7 @@
 use embedded_hal::digital::v2::OutputPin;
 use panic_halt as _;
 use rp_pico::entry;
+use rp_pico::hal::gpio::InOutPin;
 use rp_pico::hal::{self, pac, Clock};
 use rtt_target::{rprintln, rtt_init_print};
 
@@ -33,6 +34,9 @@ fn main() -> ! {
         sio.gpio_bank0,
         &mut pac.RESETS,
     );
+    let pin_5 = InOutPin::new(pins.gpio5);
+    let mut bus = one_wire_bus::OneWire::new(pin_5).unwrap();
+
     let mut led = pins.led.into_push_pull_output();
     rprintln!("DepthCast Pico: firmware started");
 
